@@ -1,0 +1,73 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="fastapi" />
+          <option value="uvicorn" />
+          <option value="pydantic" />
+          <option value="python-dotenv" />
+          <option value="langchain" />
+          <option value="langchain-core" />
+          <option value="langchain-community" />
+          <option value="langchain-openai" />
+          <option value="langgraph" />
+          <option value="langchain-chroma" />
+          <option value="chromadb" />
+          <option value="tiktoken" />
+          <option value="pypdf" />
+          <option value="python-docx" />
+          <option value="rank-bm25" />
+          <option value="dashscope" />
+          <option value="langchain-text-splitters" />
+          <option value="python-multipart" />
+          <option value="aiofiles" />
+          <option value="streamlit" />
+          <option value="redis" />
+          <option value="faster-whisper" />
+          <option value="ffmpeg-python" />
+          <option value="soundfile" />
+          <option value="graphviz" />
+          <option value="python-graphviz" />
+          <option value="ipython" />
+          <option value="ipywidgets" />
+          <option value="joblib" />
+          <option value="jupyterlab" />
+          <option value="matplotlib" />
+          <option value="nbdime" />
+          <option value="pandas" />
+          <option value="py-xgboost" />
+          <option value="pydot" />
+          <option value="scikit-learn" />
+          <option value="scipy" />
+          <option value="tqdm" />
+          <option value="widgetsnbextension" />
+          <option value="keras-core" />
+          <option value="keras-tuner" />
+          <option value="tensorboard-plugin-profile" />
+          <option value="tensorflow-datasets" />
+          <option value="tensorflow-hub" />
+          <option value="tensorflow-serving-api" />
+          <option value="transformers" />
+          <option value="urlextract" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyStubPackagesAdvertiser" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="scipy" />
+          <option value="celery" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="app.*" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
