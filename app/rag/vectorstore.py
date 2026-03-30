@@ -4,7 +4,6 @@ from langchain_chroma import Chroma
 from app.config import settings
 
 def get_vectorstore(embeddings):
-    # Connect to Chroma Server running in Docker (chromadb/chroma:0.6.3)
     client = chromadb.HttpClient(
         host=settings.chroma_host,
         port=settings.chroma_port

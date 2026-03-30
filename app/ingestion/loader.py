@@ -42,7 +42,7 @@ def split_docs(docs:List[Document])->List[Document]:
                                                 chunk_overlap=settings.chunk_overlap)
     return splitter.split_documents(docs)
 
-# ... existing code ...
+
 
 if __name__ == "__main__":
     for l in load_docs('../../data'):
