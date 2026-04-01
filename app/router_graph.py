@@ -16,11 +16,12 @@ from altair.theme import active
 from langgraph.graph import StateGraph,START,END
 from app.rag.qa_graph import build_qa_graph
 from app.workflow.leave.leave_graph import build_leave_graph
-class RoutrState(TypedDict,total=False):#顶层状态结构，total=False表示这个结构可以有任意字段
-    question:str #给QA的问题
-    text: str  #用户原始的文本
+class RoutrState(TypedDict,total=False):#顶层状态结构，total=False 表示这个结构可以有任意字段
+    question:str #给 QA 的问题
+    text: str #用户原始的文本
     user_role:str #用户角色
-    mode: str #模式标记，比如qa,rag,kb等等
+    requester:str #请求者用户名
+    mode: str #模式标记，比如 qa,rag,kb 等等
     requests:str
     active_route:str
 
@@ -29,7 +30,7 @@ class RoutrState(TypedDict,total=False):#顶层状态结构，total=False表示�
     violations:list[str]
 
     answer:str #答案
-    docs:list[Any] #QA检索到的文档列表
+    docs:list[Any] #QA 检索到的文档列表
     leave_id:str
 
 def decide_route(state:RoutrState)->str: #决定去哪个路由

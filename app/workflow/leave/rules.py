@@ -31,9 +31,9 @@ def validate_leave(req:Dict[str,Any],balances_days:float = 5.0) -> Tuple[List[st
         if start < datetime.now() + timedelta(days=1):
             violations.append("年假需要提前1个工作日开始")
 
-        if leave_type == "sick":
-            if duration >= 1 and not req.get("reason"):
-                violations.append("病假时长必须大于1天，请填写病假原因")
+    if leave_type == "sick":
+        if duration >= 1 and not req.get("reason"):
+            violations.append("病假时长必须大于1天，请填写病假原因")
 
     req["duration_days"] = round(duration,2)
     return missing,violations

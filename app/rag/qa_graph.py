@@ -16,9 +16,9 @@ class QAstate(TypedDict, total=False):
 def decide_retrieve(state:QAstate):
     """
     条件函数：决定走检索还是直答
-    返回值必须对应add_conditional_edges的key
+    返回值必须对应 add_conditional_edges 的 key
     """
-    return "retrieve_node" #跳到下一个叫做retrieve的节点
+    return "retrieve" #返回"retrieve"，对应下面映射中的 key，跳到 retrieve_node 节点
 
 def decide_retrieve_node(state:QAstate) ->dict:
     """
