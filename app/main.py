@@ -14,17 +14,29 @@ import chromadb
 app = FastAPI(title = "Enterprise")
 DATA_DOCS_DIR = Path("./data/docs")
 DATA_DOCS_DIR.mkdir(parents=True, exist_ok=True)
+SESSIONS:dict[str,dict] = {}
 class ChatRep(BaseModel):
     text:str
     user_role:str = "public"
     requests:str = "anonymous"
+    mode:Optional[str] = None
+    session_id:Optional[str] = None
 
 class ChatResp(BaseModel):
     answer:str
 
 @app.post("/chat",response_model=ChatResp)
 def chat(req:ChatRep):
-    out = router_graph.invoke(req.model_dump())
+    payload = req.model_dump()
+    sid = payload.get("session_id")
+    if sid and sid in SESSIONS:#sid不空且在session这个变量里存在
+        prev = SESSIONS[sid]
+        merged = {**prev,**payload}
+        merged["text"] = merged.get("text")
+        payload = merged #这段是将旧的提问+回答和现在的提问合并然后准备重新送给大模型
+    out = router_graph.invoke(payload)
+    if sid:
+        SESSIONS[sid] = {**payload,**out}
     return {"answer":out["answer"]}
 
 @app.post("/ingest")

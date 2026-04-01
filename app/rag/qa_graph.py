@@ -18,7 +18,7 @@ def decide_retrieve(state:QAstate):
     条件函数：决定走检索还是直答
     返回值必须对应add_conditional_edges的key
     """
-    return "retrieve" #跳到下一个叫做retrieve的节点
+    return "retrieve_node" #跳到下一个叫做retrieve的节点
 
 def decide_retrieve_node(state:QAstate) ->dict:
     """
@@ -27,7 +27,7 @@ def decide_retrieve_node(state:QAstate) ->dict:
     """
     return{} #返回一个空字典，表示什么也不做
 
-def retrieve(state:QAstate)->dict:
+def retrieve_node(state:QAstate)->dict:
     """
     从Chroma数据库里检索相关文档
     先按照visibility做过滤；如果元数据里没有该字段导致检索为空，
@@ -52,14 +52,14 @@ def retrieve(state:QAstate)->dict:
         return {"docs":docs,"question":query,"debug":"filtered"}
     return {"docs": docs, "question": query, "debug": "filtered"}
 
-def grade_evidence(state:QAstate)->str:
+def grade_evidence_node(state:QAstate)->str:
     """
     检索后判断是否有证据
     主要看有没有[1][3]
     """
     return "good" if state.get("docs") else "bad"
 
-def generate_answer(state:QAstate)->dict:
+def generate_answer_node(state:QAstate)->dict:
     """带引用生成答案"""
     llm = get_llm()
     docs =state.get("docs",[])
@@ -77,7 +77,7 @@ def generate_answer(state:QAstate)->dict:
     ans = llm.invoke(messages).content
     return {"answer":ans}
 
-def refuse_or_clarify(state:QAstate)->dict:
+def refuse_or_clarify_node(state:QAstate)->dict:
     """
     无证据兜底
     """
@@ -86,27 +86,27 @@ def refuse_or_clarify(state:QAstate)->dict:
 def build_qa_graph():
     g = StateGraph(QAstate)
 
-    g.add_node("decide_retrieve",decide_retrieve_node)#条件节点
-    g.add_node("retrieve",retrieve)#检索
-    g.add_node("generate",generate_answer)#带引用生成答案
-    g.add_node("refuse",refuse_or_clarify)#无证据
+    g.add_node("decide_retrieve_node",decide_retrieve_node)#条件节点
+    g.add_node("retrieve_node",retrieve_node)#检索
+    g.add_node("generate_node",generate_answer_node)#带引用生成答案
+    g.add_node("refuse_node",refuse_or_clarify_node)#无证据
 
     #State -> dicide_retrieve
-    g.add_edge(START,"decide_retrieve")
+    g.add_edge(START,"decide_retrieve_node")
 
     #decide_retrieve 的路由条件
     g.add_conditional_edges(
-        "decide_retrieve", decide_retrieve, {
-            "retrieve": "retrieve",  # ✅ 如果返回"retrieve"，就去 retrieve 节点
+        "decide_retrieve_node", decide_retrieve, {
+            "retrieve": "retrieve_node",  # ✅ 如果返回"retrieve"，就去 retrieve 节点
         },
     )
     #retrieve 后根据证据充分性路由
-    g.add_conditional_edges("retrieve", grade_evidence, {
-        "good": "generate",
-        "bad": "refuse"
+    g.add_conditional_edges("retrieve_node", grade_evidence_node, {
+        "good": "generate_node",
+        "bad": "refuse_node"
     })
-    g.add_edge("generate", END)
-    g.add_edge("refuse", END)
+    g.add_edge("generate_node", END)
+    g.add_edge("refuse_node", END)
 
     return g.compile()
 
